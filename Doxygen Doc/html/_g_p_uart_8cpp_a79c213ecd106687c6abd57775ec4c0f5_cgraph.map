@@ -1,6 +1,0 @@
-<map id="GPUart_init" name="GPUart_init">
-<area shape="rect" id="node2" href="$_g_p_uart___impl_8cu.html#a48fc5602321cc474b4abfb7c4dd2f236" title="gpuI_init" alt="" coords="147,5,218,32"/>
-<area shape="rect" id="node3" href="$_g_p_uart___scheduler_8cpp.html#ab70da75537d4eebb332d766cc8e593c5" title="Initializes the GPUart Scheduling layer. " alt="" coords="145,56,221,83"/>
-<area shape="rect" id="node5" href="$_g_p_uart___abstraction_8cpp.html#ad846a12b30fbf8b933ed2377a6f6ffb1" title="Initialize the context of the GPUart Abstraction layer. " alt="" coords="145,107,221,133"/>
-<area shape="rect" id="node4" href="$_g_p_uart___impl_8cu.html#a652293d112e50ff63922d253759b8e21" title="gpuI_get_NrOfMultiprocessors" alt="" coords="270,56,469,83"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="gpuS_priorityList_delete" name="gpuS_priorityList_delete">
-<area shape="rect" id="node2" href="$_g_p_uart___scheduler_8cpp.html#a125ef2d23a0316941953d18256cc68ed" title="Updates a the scheduling state (gpuS_kernelTaskStatus_e) of each kernel. " alt="" coords="216,5,400,32"/>
-<area shape="rect" id="node3" href="$_g_p_uart___scheduler_8h.html#a9a8f61a2ef33bfab6c45e941444ea455" title="Executes the scheduling decision. " alt="" coords="449,5,559,32"/>
-<area shape="rect" id="node4" href="$_g_p_uart_8h.html#a2a51493ed6b8e804a712cf0b8dd6cfe0" title="Trigger the scheduler of GPUart to process the scheduling decision. " alt="" coords="608,5,733,32"/>
-<area shape="rect" id="node5" href="$_s_w_c___scheduler_8cpp.html#a8700bbe2613a501765bf088cc224693f" title="swc_Scheduler_Thread2" alt="" coords="781,5,947,32"/>
-<area shape="rect" id="node6" href="$_s_w_c___scheduler_8cpp.html#a6177e3516143d32cc560533a96634314" title="swc_Scheduler_MPMD" alt="" coords="995,5,1154,32"/>
-<area shape="rect" id="node7" href="$_s_w_c___scheduler_8h.html#a8b146fae0015816eab58c8386bf1a6fc" title="swc_Scheduler_run" alt="" coords="1203,5,1339,32"/>
-<area shape="rect" id="node8" href="$main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="1387,5,1437,32"/>
-</map>

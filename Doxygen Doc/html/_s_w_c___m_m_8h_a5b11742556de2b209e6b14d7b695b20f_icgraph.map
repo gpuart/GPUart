@@ -1,6 +1,0 @@
-<map id="swc_MatrMul_Task_periodic" name="swc_MatrMul_Task_periodic">
-<area shape="rect" id="node2" href="$_s_w_c___scheduler_8cpp.html#a39a8112838a6320bcd6305b27e175fe5" title="swc_Scheduler_Thread1" alt="" coords="243,5,408,32"/>
-<area shape="rect" id="node3" href="$_s_w_c___scheduler_8cpp.html#a6177e3516143d32cc560533a96634314" title="swc_Scheduler_MPMD" alt="" coords="457,5,615,32"/>
-<area shape="rect" id="node4" href="$_s_w_c___scheduler_8h.html#a8b146fae0015816eab58c8386bf1a6fc" title="swc_Scheduler_run" alt="" coords="664,5,800,32"/>
-<area shape="rect" id="node5" href="$main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="848,5,899,32"/>
-</map>

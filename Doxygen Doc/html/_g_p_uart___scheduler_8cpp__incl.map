@@ -1,7 +1,0 @@
-<map id="GPUart_Scheduler/GPUart_Scheduler.cpp" name="GPUart_Scheduler/GPUart_Scheduler.cpp">
-<area shape="rect" id="node2" href="$_g_p_uart___scheduler_8h.html" title="Interface to the GPUart Scheduling layer. " alt="" coords="215,104,357,131"/>
-<area shape="rect" id="node7" href="$_g_p_uart___impl___sched___i_f_8h.html" title="../GPUart_Impl/GPUart\l_Impl_Sched_IF.h" alt="" coords="33,97,191,138"/>
-<area shape="rect" id="node8" href="$_s_w_c___scheduler_8h.html" title="../SW&#45;C/Scheduler/SWC\l_Scheduler.h" alt="" coords="383,97,551,138"/>
-<area shape="rect" id="node3" href="$_g_p_uart___common_8h.html" title="A library which defines some common macros, typedefs. " alt="" coords="5,187,192,229"/>
-<area shape="rect" id="node6" href="$_g_p_uart___config_8h.html" title="Configuration of IDs for constant memory data, global memory data and kernels. " alt="" coords="216,187,387,229"/>
-</map>

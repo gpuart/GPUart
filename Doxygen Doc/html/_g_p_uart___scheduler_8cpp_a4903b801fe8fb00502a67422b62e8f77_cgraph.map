@@ -1,5 +1,0 @@
-<map id="gpuS_updateListWithNewJobs" name="gpuS_updateListWithNewJobs">
-<area shape="rect" id="node2" href="$_g_p_uart___scheduler_8cpp.html#a10dabe84fa6aaeadbc6332c2fed27452" title="Copies a job stack job_stack_s. " alt="" coords="263,5,409,32"/>
-<area shape="rect" id="node3" href="$_g_p_uart___scheduler_8cpp.html#a0605c7e8580b0d019d8f3bd89ab25e51" title="Pull a job from a job stack. " alt="" coords="267,56,405,83"/>
-<area shape="rect" id="node4" href="$_g_p_uart___scheduler_8cpp.html#a1e94c8a613c7003ab206f84947fe4cdc" title="Insert a job into a priority based list. " alt="" coords="257,107,415,133"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="gpuS_priorityList_insert" name="gpuS_priorityList_insert">
-<area shape="rect" id="node2" href="$_g_p_uart___scheduler_8cpp.html#a4903b801fe8fb00502a67422b62e8f77" title="Updates a priority based job list with all new released jobs. " alt="" coords="214,5,415,32"/>
-<area shape="rect" id="node3" href="$_g_p_uart___scheduler_8h.html#a9a8f61a2ef33bfab6c45e941444ea455" title="Executes the scheduling decision. " alt="" coords="465,5,575,32"/>
-<area shape="rect" id="node4" href="$_g_p_uart_8h.html#a2a51493ed6b8e804a712cf0b8dd6cfe0" title="Trigger the scheduler of GPUart to process the scheduling decision. " alt="" coords="624,5,749,32"/>
-<area shape="rect" id="node5" href="$_s_w_c___scheduler_8cpp.html#a8700bbe2613a501765bf088cc224693f" title="swc_Scheduler_Thread2" alt="" coords="797,5,963,32"/>
-<area shape="rect" id="node6" href="$_s_w_c___scheduler_8cpp.html#a6177e3516143d32cc560533a96634314" title="swc_Scheduler_MPMD" alt="" coords="1011,5,1170,32"/>
-<area shape="rect" id="node7" href="$_s_w_c___scheduler_8h.html#a8b146fae0015816eab58c8386bf1a6fc" title="swc_Scheduler_run" alt="" coords="1219,5,1355,32"/>
-<area shape="rect" id="node8" href="$main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="1403,5,1453,32"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="gpuS_new_Job" name="gpuS_new_Job">
-<area shape="rect" id="node2" href="$_g_p_uart___impl_8cu.html#a6179a901c49eed36f24c87c076e9324f" title="gpuI_SetKernelStatusReady" alt="" coords="165,5,352,32"/>
-<area shape="rect" id="node3" href="$_g_p_uart___scheduler_8cpp.html#ac07a086dfe3605db3179ac20e4cf8641" title="Get the priority of a job (kernel instance). " alt="" coords="199,56,318,83"/>
-<area shape="rect" id="node5" href="$_g_p_uart___scheduler_8cpp.html#af96373a359f5042852371e6e2220691a" title="Push a new kernel instance to the shared job stack. " alt="" coords="186,107,331,133"/>
-<area shape="rect" id="node4" href="$_s_w_c___scheduler_8cpp.html#a82ce61473394b62458f9b5a93919e912" title="swc_Scheduler_getClock" alt="" coords="400,56,571,83"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="gpuA_MM_call" name="gpuA_MM_call">
-<area shape="rect" id="node2" href="$_s_w_c___m_m_8h.html#a5b11742556de2b209e6b14d7b695b20f" title="swc_MatrMul_Task_periodic" alt="" coords="163,5,351,32"/>
-<area shape="rect" id="node3" href="$_s_w_c___scheduler_8cpp.html#a39a8112838a6320bcd6305b27e175fe5" title="swc_Scheduler_Thread1" alt="" coords="400,5,565,32"/>
-<area shape="rect" id="node4" href="$_s_w_c___scheduler_8cpp.html#a6177e3516143d32cc560533a96634314" title="swc_Scheduler_MPMD" alt="" coords="614,5,773,32"/>
-<area shape="rect" id="node5" href="$_s_w_c___scheduler_8h.html#a8b146fae0015816eab58c8386bf1a6fc" title="swc_Scheduler_run" alt="" coords="821,5,957,32"/>
-<area shape="rect" id="node6" href="$main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="1005,5,1056,32"/>
-</map>

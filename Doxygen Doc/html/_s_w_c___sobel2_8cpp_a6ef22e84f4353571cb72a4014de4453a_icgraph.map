@@ -1,6 +1,0 @@
-<map id="swc_Sobel2_Task_periodic" name="swc_Sobel2_Task_periodic">
-<area shape="rect" id="node2" href="$_s_w_c___scheduler_8cpp.html#a7cfbd8a482f46ca2721b6cb471c0d97b" title="swc_Scheduler_Thread0" alt="" coords="235,5,400,32"/>
-<area shape="rect" id="node3" href="$_s_w_c___scheduler_8cpp.html#a6177e3516143d32cc560533a96634314" title="swc_Scheduler_MPMD" alt="" coords="449,5,607,32"/>
-<area shape="rect" id="node4" href="$_s_w_c___scheduler_8h.html#a8b146fae0015816eab58c8386bf1a6fc" title="swc_Scheduler_run" alt="" coords="656,5,792,32"/>
-<area shape="rect" id="node5" href="$main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="840,5,891,32"/>
-</map>
