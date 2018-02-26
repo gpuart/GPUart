@@ -1,0 +1,5 @@
+<map id="gpuS_updateRunningStatus" name="gpuS_updateRunningStatus">
+<area shape="rect" id="node2" href="$_g_p_uart___impl_8cu.html#a4fe07d933b2ac0019f1f56f8907d707b" title="gpuI_queryKernelTerminated\lSuccessful" alt="" coords="238,5,426,46"/>
+<area shape="rect" id="node3" href="$_g_p_uart___scheduler_8cpp.html#a9adc0404907c253daa1df2c76d017a35" title="Delete a job from a priority based list. " alt="" coords="251,71,413,97"/>
+<area shape="rect" id="node4" href="$_g_p_uart___impl_8cu.html#a09011ea33aae8169f7b08a41db1d3e20" title="gpuI_queryKernelPreempted" alt="" coords="239,121,425,148"/>
+</map>

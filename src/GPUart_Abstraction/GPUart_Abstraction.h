@@ -31,6 +31,17 @@
 *                                                       *
 *********************************************************/
 
+/*!	@file 	GPUart_Abstraction.h
+ *
+ * 	@brief 	The interface to manage the GPUart Abstraction layer.
+ *
+ *			Provides the interfaces to initialize and destroy the Abstraction layer.
+ * 			This layer is used to achieve higher portability by abstracting the systems's heterogeneity.
+ *
+ * 	@author	Christoph Hartmann
+ *  @date	Created on: 3 Apr 2017
+ */
+
 #ifndef GPUART_ABSTRACTION_H
 #define GPUART_ABSTRACTION_H
 
@@ -44,11 +55,21 @@
 /************************************************************************************************/
 /* Function declaration																			*/
 /************************************************************************************************/
+
+/*	@brief	Initialize the context of the GPUart Abstraction layer.
+ *
+ * 	@param	void
+ * 	@return	GPUART_SUCCESS
+ */
 GPUart_Retval gpuA_init(void);
 
-GPUart_Retval gpuA_clearServiceStatusFlag(kernel_task_id_e taskID_p);
 
-
+/*	@brief	Destroy the context of the GPUart Abstraction layer.
+ *
+ * 	@param	void
+ * 	@return	GPUART_SUCCESS
+ */
+GPUart_Retval gpuA_destroy(void);
 
 
 #endif

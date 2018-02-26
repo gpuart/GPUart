@@ -18,7 +18,7 @@
 //SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 
 /*
-* File:			GPUart.c
+* File:			GPUart.cpp
 * Created by: 	Christoph Hartmann
 * Institute:	Technische Hochschule Ingolstadt
 * Date:			11.05.2017								*/
@@ -30,6 +30,18 @@
 *  |     |___|  |  \   |    |  |___|   ___|  |   |___   *
 *                                                       *
 *********************************************************/
+
+/*!	@file 	GPUart.cpp
+ *
+ * 	@brief 	Manages the status and context of GPUart.
+ *
+ * 			The inferface to init, start, stop, and destroy GPUart.
+ * 			Provides also the interface to trigger scheduler of GPUart
+ * 			(The prototype of GPUart schedules by polling).
+ *
+ * 	@author	Christoph Hartmann
+ *  @date	Created on: 11 May 2017
+ */
 
 
 /************************************************************************************************/
@@ -44,6 +56,17 @@
 /************************************************************************************************/
 /* General GPUart function																		*/
 /************************************************************************************************/
+
+
+/*! @brief	Initialize all layers of GPUart.
+ *
+ * 			This function calls the init-functions of the Implementation, Scheduling, and Abstraction layers
+ * 			to initialize GPUart related context.
+ * 			Call this function before GPUart_start().
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_init(void)
 {
 	GPUART_CHECK_RETURN( gpuI_init() );
@@ -51,22 +74,59 @@ void GPUart_init(void)
 	GPUART_CHECK_RETURN( gpuA_init() );
 }
 
+
+/*! @brief	Enable kernel execution on the GPU.
+ *
+ * 			This function calls the Implementation layer to launch the persistent GPU thread,
+ * 			which is used to reduce kernel launch latencies.
+ * 			Call this function after GPUart_init().
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_start(void)
 {
 	GPUART_CHECK_RETURN( gpuI_start() );
 }
 
+
+/*! @brief	Disable kernel execution on the GPU.
+ *
+ * 			This function calls the Implementation layer to terminate the persistent GPU thread.
+ * 			Call this function before GPUart_destroy().
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_stop(void)
 {
 	GPUART_CHECK_RETURN( gpuI_stop() );
 }
 
+/*! @brief	Destroy all GPUart related context.
+ *
+ * 			This function calls the destroy-functions of the Implementation, Scheduling, and Abstraction layers
+ * 			to destroy GPUart related context.
+ * 			Call this function after GPUart_stop().
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_destroy(void)
 {
 	GPUART_CHECK_RETURN( gpuI_destroy() );
 	GPUART_CHECK_RETURN( gpuS_destroy() );
+	GPUART_CHECK_RETURN( gpuA_destroy() );
 }
 
+/*! @brief	Trigger the scheduler of GPUart to process the scheduling decision.
+ *
+ * 			Trigger the scheduler of GPUart to process the scheduling decision
+ * 			(The prototype of GPUart schedules by polling).
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_schedule(void)
 {
 	GPUART_CHECK_RETURN( gpuS_schedule() );

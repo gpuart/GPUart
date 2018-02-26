@@ -1,0 +1,15 @@
+<map id="swc_Scheduler_Thread2" name="swc_Scheduler_Thread2">
+<area shape="rect" id="node2" href="$_g_p_uart_8cpp.html#a2a51493ed6b8e804a712cf0b8dd6cfe0" title="Trigger the scheduler of GPUart to process the scheduling decision. " alt="" coords="219,248,344,275"/>
+<area shape="rect" id="node3" href="$_g_p_uart___scheduler_8cpp.html#a9a8f61a2ef33bfab6c45e941444ea455" title="Executes the scheduling decision. " alt="" coords="393,248,503,275"/>
+<area shape="rect" id="node4" href="$_g_p_uart___scheduler_8cpp.html#a125ef2d23a0316941953d18256cc68ed" title="Updates a the scheduling state (gpuS_kernelTaskStatus_e) of each kernel. " alt="" coords="561,96,745,123"/>
+<area shape="rect" id="node8" href="$_g_p_uart___scheduler_8cpp.html#a4903b801fe8fb00502a67422b62e8f77" title="Updates a priority based job list with all new released jobs. " alt="" coords="553,197,754,224"/>
+<area shape="rect" id="node12" href="$_g_p_uart___impl_8cu.html#a0ea6cb37b50a42cdaee37d52dce5dec0" title="gpuI_getJobCosts" alt="" coords="589,248,717,275"/>
+<area shape="rect" id="node13" href="$_g_p_uart___impl_8cu.html#a76dc983217ddb3c7976533dd33944733" title="Request the launch of a GPGPU kernel. " alt="" coords="607,299,700,325"/>
+<area shape="rect" id="node14" href="$_g_p_uart___impl_8cu.html#a398af958c012c2142252985df0f4fec0" title="gpuI_preemptJob" alt="" coords="592,349,715,376"/>
+<area shape="rect" id="node5" href="$_g_p_uart___impl_8cu.html#a4fe07d933b2ac0019f1f56f8907d707b" title="gpuI_queryKernelTerminated\lSuccessful" alt="" coords="803,5,991,46"/>
+<area shape="rect" id="node6" href="$_g_p_uart___scheduler_8cpp.html#a9adc0404907c253daa1df2c76d017a35" title="Delete a job from a priority based list. " alt="" coords="817,71,978,97"/>
+<area shape="rect" id="node7" href="$_g_p_uart___impl_8cu.html#a09011ea33aae8169f7b08a41db1d3e20" title="gpuI_queryKernelPreempted" alt="" coords="804,121,991,148"/>
+<area shape="rect" id="node9" href="$_g_p_uart___scheduler_8cpp.html#a10dabe84fa6aaeadbc6332c2fed27452" title="Copies a job stack job_stack_s. " alt="" coords="825,172,970,199"/>
+<area shape="rect" id="node10" href="$_g_p_uart___scheduler_8cpp.html#a0605c7e8580b0d019d8f3bd89ab25e51" title="Pull a job from a job stack. " alt="" coords="829,223,966,249"/>
+<area shape="rect" id="node11" href="$_g_p_uart___scheduler_8cpp.html#a1e94c8a613c7003ab206f84947fe4cdc" title="Insert a job into a priority based list. " alt="" coords="818,273,977,300"/>
+</map>

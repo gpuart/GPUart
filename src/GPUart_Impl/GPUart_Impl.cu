@@ -31,23 +31,32 @@
 *                                                       *
 *********************************************************/
 
+/*!	@file 	GPUart_Impl.cu
+ *
+ * 	@brief 	Implementation of the management component of the GPUart Implemenation layer.
+ *
+ * 			This file concentrates all GPGPU related memory declarations and allocations, memory transfers
+ * 			operations, kernel launches, kernel initialisations, and GPU related implementation details.
+ *
+ *
+ * 	@author	Christoph Hartmann
+ *  @date	Created on: 7 Apr 2017
+ */
+
 
 /************************************************************************************************/
 /* Includes																						*/
 /************************************************************************************************/
-/* CUDA Runtime and device driver*/
-#include <cuda.h>
-#include <cuda_runtime.h>
-#include <cuda_profiler_api.h>
 
-#include "../GPUart_Common/GPUart_Common.h"
-#include "../GPUart_Config/GPUart_Config.h"
-
-#include "GPUart_Impl_Abstr_IF.h"
-#include "GPUart_Impl_Sched_IF.h"
+//include header of Implementation layer
 #include "GPUart_Impl.cuh"
 #include "GPUart_Impl.h"
 
+//include interfaces to other GPUart layer
+#include "GPUart_Impl_Abstr_IF.h"
+#include "GPUart_Impl_Sched_IF.h"
+
+//include kernel libraries
 #include "GPUart_Sobel.cuh"
 #include "GPUart_MatrMul.cuh"
 
@@ -56,21 +65,57 @@
 /************************************************************************************************/
 /* Compiler Switches																			*/
 /************************************************************************************************/
- #define S_USE_ZERO_COPY_FOR_GLOBAL_APPLICATION_MEMORY	//This MUST be defined so far, since discrete memory transfer is not implemented completely.
+/*! @brief Use zero copy memory (requires integrated GPU)
+ *
+ * This MUST be defined so far, since memory transfers over PCIe are currently not implemented completely.
+ *
+ *  @see http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#zero-copy-memory
+ *  @see https://software.intel.com/en-us/articles/getting-the-most-from-opencl-12-how-to-increase-performance-by-minimizing-buffer-copies-on-intel-processor-graphics
+ */
+#define S_USE_ZERO_COPY_FOR_GLOBAL_APPLICATION_MEMORY
 
 /************************************************************************************************/
 /* Constants																					*/
 /************************************************************************************************/
+
+/*!
+ * 	@brief The length of the Event Queue, shared between GPU and CPU, used for kernel launch events.
+ *
+ * 	@see perKer_eventQueueCntHost_u32_host
+ * 	@see perKer_eventQueueCntDevice_u32_host
+ * 	@see perKer_eventQueue_s32_host
+ */
 #define C_PERSISTENT_KERNEL_EVENT_QUEUE_LENGTH	(10)	//Length of event queue
+
+/*!
+ * 	@brief Event ID to indicate a termination request for the persistent kernel
+ *
+ * 	@see perKer_eventQueueCntHost_u32_host
+ * 	@see perKer_eventQueueCntHost_u32_g
+ */
 #define C_PERSISTENT_KERNEL_TERMINATE			(-1)	//Event ID to terminate persistent kernel
 
-#define C_GPUI_DUMMY_MEM_SIZE					(1500)	//TODO Delete later
+
 /************************************************************************************************/
 /* Typedef																						*/
 /************************************************************************************************/
+
+/*!
+ * 	@brief Typedef for command queues (streams) to abstract GPGPU-API
+ *
+ * 	Command queues are required to improve the concurrency of memory and kernel operatation on the GPU.
+ *
+ * 	@see https://developer.download.nvidia.com/CUDA/training/StreamsAndConcurrencyWebinar.pdf
+ * 	@see https://www.khronos.org/registry/OpenCL/sdk/1.0/docs/man/xhtml/clCreateCommandQueue.html
+ */
 typedef cudaStream_t command_queue_s;
 
 
+/*!
+ * 	@brief Typedef for a struct which combines global memory pointers, their related host pointers,
+ * 		   and the size of the memory buffer.
+ *
+ */
 typedef struct
 {
 	void ** mem_ptr;
@@ -78,6 +123,10 @@ typedef struct
 	size_t mem_size;
 }device_global_memory_s;
 
+/*!
+ * 	@brief Typedef for a struct which combines constant memory pointers and the size of the related memory buffer.
+ *
+ */
 typedef struct
 {
 	void ** mem_ptr;
@@ -85,38 +134,97 @@ typedef struct
 }device_constant_memory_s;
 
 
-
-
-
-
 /************************************************************************************************/
 /* General Variables																			*/
 /************************************************************************************************/
+
+/*!
+ *  @brief The command queue (stream) for memory operations
+ */
 static command_queue_s memory_command_queue_s;
+
+/*!
+ *  @brief The command queue (stream) for the persistent kernel
+ */
 static command_queue_s persistent_kernel_command_queue_s;
 
+
+/*! @var perKer_isRunning_u32_host
+ *  @brief A status flag, which represents the running status of the persistent kernel (host pointer).
+ *  @see perKer_isRunning_u32_g
+ */
+/*! @var perKer_isRunning_u32_g
+ *  @brief A status flag, which represents the running status of the persistent kernel (device pointer).
+ *  @see perKer_isRunning_u32_host
+ */
 volatile uint32 *perKer_isRunning_u32_host;
 uint32 *perKer_isRunning_u32_g;
 
-volatile uint32 *perKer_eventQueueCntDevice_u32_host;
-uint32 *perKer_eventQueueCntDevice_u32_g;
 
+/*! @var perKer_eventQueueCntHost_u32_host
+ *  @brief The index of the tail of the event queue for kernel launches written by the host (host pointer).
+ *  @see perKer_eventQueueCntDevice_u32_g
+ */
+/*! @var perKer_eventQueueCntHost_u32_g
+ *  @brief The index of the tail of the event queue for kernel launches written by the host (device pointer).
+ *  @see perKer_eventQueueCntHost_u32_host
+ */
 volatile uint32 *perKer_eventQueueCntHost_u32_host;
 uint32 *perKer_eventQueueCntHost_u32_g;
 
+/*! @var perKer_eventQueueCntDevice_u32_host
+ *  @brief The index of the head of the event queue for kernel launches written by the device (host pointer).
+ *  @see perKer_eventQueueCntDevice_u32_g
+ */
+/*! @var perKer_eventQueueCntDevice_u32_g
+ *  @brief The index of the head of the event queue for kernel launches written by the device (device pointer).
+ *  @see perKer_eventQueueCntDevice_u32_host
+ */
+volatile uint32 *perKer_eventQueueCntDevice_u32_host;
+uint32 *perKer_eventQueueCntDevice_u32_g;
+
+
+/*! @var perKer_eventQueue_s32_host
+ *  @brief The event queue for kernel launch requests, written by the CPU and red by the GPU (host pointer).
+ *
+ *  		To request a kernel launch, write the kernel's ID (#kernel_task_id_e) into the tail of the queue.
+ *  		Write #C_PERSISTENT_KERNEL_TERMINATE to terminate the persistent kernel #GPUart_Persistent_Kernel.
+ *  @see perKer_eventQueue_s32_g
+ */
+/*! @var perKer_eventQueue_s32_g
+ *  @brief The event queue for kernel launch requests, written by the CPU and red by the GPU (device pointer).
+ *
+ *      	To request a kernel launch, write the kernel's ID (#kernel_task_id_e) into the tail of the queue.
+ *  		Write #C_PERSISTENT_KERNEL_TERMINATE to terminate the persistent kernel #GPUart_Persistent_Kernel.
+ *  @see perKer_eventQueue_s32_host
+ */
 volatile sint32 *perKer_eventQueue_s32_host;
 sint32 *perKer_eventQueue_s32_g;
 
+/*! @var perKer_kernelTasksRunningStates_u32_host
+ *  @brief A status flag, which represents the running status of each kernel (host pointer).
+ *  @see perKer_kernelTasksRunningStates_u32_g
+ */
+/*! @var perKer_kernelTasksRunningStates_u32_g
+ *  @brief A status flag, which represents the running status of each kernel (device pointer).
+ *  @see perKer_kernelTasksRunningStates_u32_host
+ */
 volatile uint32 *perKer_kernelTasksRunningStates_u32_host;
 uint32 *perKer_kernelTasksRunningStates_u32_g;
 
-uint32 max_blocks_per_kernel = 0;
+/*!
+ *  @brief The allowed job cost per kernel
+ *
+ *  This value is equal to m * µ, whereby m is the number of Streaming Multiprocessors of the GPU
+ *  #gpuS_nrOfMultiprocessor_u32 and µ is the resource factor #C_GPUS_RESOURCE_FACTOR.
+ *
+ *  @see kernel_task_id_e
+ *  @see C_GPUS_RESOURCE_FACTOR
+ *  @see gpuS_nrOfMultiprocessor_u32
+ *  @see kernel_job_costs
+ */
+uint32 max_costs_per_kernel = 0;
 
-uint32 *gpuI_Dummy_host;		//TODO delete later
-uint32 *gpuI_Dummy_device;		//TODO delete later
-
-uint32 *gpuI_Dummy_host2;		//TODO delete later
-uint32 *gpuI_Dummy_device2;		//TODO delete later
 
 
 
@@ -187,6 +295,17 @@ uint32 * mm_buffer_M_g;
 /************************************************************************************************/
 /* Constant Variable Table																		*/
 /************************************************************************************************/
+
+/*!
+ *  @brief The constant memory table
+ *
+ *  All constant memory buffers which must be written during runtime must be defined here.
+ *  The i'th element represents the i'th constant memory buffer, define by #device_constant_memory_id_e
+ *  in GPUart_Config.h. Each element must defined in the following style: { (void **)& CONSTANT_BUFFER_NAME,
+ *  SIZE_IN_BYTES }.
+ *
+ *  @see device_constant_memory_id_e
+ */
 static device_constant_memory_s constant_memory_list_a[E_CM_TOTAL_NR_OF_CONST_MEM_VARIABLES] =
 {
 //{ (void **)& VARIABLE_NAME,  SIZE IN BYTES	}
@@ -196,6 +315,17 @@ static device_constant_memory_s constant_memory_list_a[E_CM_TOTAL_NR_OF_CONST_ME
 /************************************************************************************************/
 /* Global Variable Table																		*/
 /************************************************************************************************/
+
+/*!
+ *  @brief The global memory table
+ *
+ *  All global memory buffers which must be written or red during runtime must be defined here.
+ *  The i'th element represents the i'th global memory buffer, define by #device_global_memory_id_e
+ *  in GPUart_Config.h. Each element must defined in the following style: { (void **)&
+ *  GLOBAL_MEMORY_BUFFER_POINTER_DEVICE, GLOBAL_MEMORY_BUFFER_POINTER_HOST, SIZE_IN_BYTES }.
+ *
+ *  @see device_global_memory_id_e
+ */
 static device_global_memory_s global_memory_list_a[E_GM_TOTAL_NR_OF_GLOB_MEM_VARIABLES] =
 {
 	/* Sobel1 */
@@ -216,6 +346,18 @@ static device_global_memory_s global_memory_list_a[E_GM_TOTAL_NR_OF_GLOB_MEM_VAR
 /************************************************************************************************/
 /* Preemption Flag Table																		*/
 /************************************************************************************************/
+
+/*!
+ *  @brief The preemption flag table
+ *
+ *  All preemption flags must be included by this table.
+ *  The i'th element represents the i'th kernel, according to the enum #kernel_task_id_e
+ *  in GPUart_Config.h. Each element must defined in the following style: (volatile sint32**)&
+ *  NAME_OF_PREEMPTION_FLAG_POINTER. If a kernel does not implement a preemption flag, because it
+ *  is non-preemptive, insert a NULL.
+ *
+ *  @see kernel_task_id_e
+ */
 static volatile sint32** device_preemption_flags_a[E_KTID_NUMBER_OF_KERNEL_TASKS] =
 {
 	(volatile sint32**) &preempt_SOB1_flag_host,	//E_KTID_SOBEL1
@@ -226,6 +368,16 @@ static volatile sint32** device_preemption_flags_a[E_KTID_NUMBER_OF_KERNEL_TASKS
 /************************************************************************************************/
 /* Preemption Enabled Parameter Table															*/
 /************************************************************************************************/
+
+/*!
+ *  @brief The preemption enabled table
+ *
+ *  The i'th element represents the i'th kernel, according to the enum #kernel_task_id_e
+ *  in GPUart_Config.h. Each element must defined in the following style: #C_TRUE if the related kernel
+ *  is preemptive; #C_FALSE if the related kernel is non-preemptive.
+ *
+ *  @see kernel_task_id_e
+ */
 const static sint32 preemption_enabled_a[E_KTID_NUMBER_OF_KERNEL_TASKS] =
 {
 	C_TRUE,						//E_KTID_SOBEL1
@@ -237,6 +389,16 @@ const static sint32 preemption_enabled_a[E_KTID_NUMBER_OF_KERNEL_TASKS] =
 /************************************************************************************************/
 /* Kernel State Machine Table																	*/
 /************************************************************************************************/
+
+/*!
+ *  @brief The kernel state machine table
+ *
+ *  The i'th element represents the i'th kernel, according to the enum #kernel_task_id_e
+ *  in GPUart_Config.h. Each element must defined in the following style: &NAME_OF_STATE_MACHINE_POINTER.
+ *  Use NULL if the related kernel is non-preemptive.
+ *
+ *  @see kernel_task_id_e
+ */
 static volatile sint32** device_kernel_task_SM_a[E_KTID_NUMBER_OF_KERNEL_TASKS] =
 {
 	&preempt_SOB1_sm_host,		//E_KTID_SOBEL1
@@ -244,6 +406,17 @@ static volatile sint32** device_kernel_task_SM_a[E_KTID_NUMBER_OF_KERNEL_TASKS] 
 	&preempt_MM_sm_host			//E_KTID_MM
 };
 
+/*!
+ *  @brief The number of state machines table
+ *
+ *  The i'th element represents the i'th kernel, according to the enum kernel_task_id_e
+ *  in GPUart_Config.h. Each element must defined in the following style: NUMBER_OF_SM_IN_KERNEL.
+ *  If a kernel preempts grid-synchronous then use the value 1u. If a kernel preempts thread-block
+ *  synchronous then use the number of thread blocks of this kernel. If a kernel is non-preemptive
+ *  then use 0u.
+ *
+ *  @see kernel_task_id_e
+ */
 static uint32 nb_of_StateMachines_in_kernel_a[E_KTID_NUMBER_OF_KERNEL_TASKS] =
 {
 	1u,							//E_KTID_SOBEL1	-> Grid-wide preemption
@@ -255,6 +428,23 @@ static uint32 nb_of_StateMachines_in_kernel_a[E_KTID_NUMBER_OF_KERNEL_TASKS] =
 /************************************************************************************************/
 /* Kernel Cost Table																			*/
 /************************************************************************************************/
+
+/*!
+ *  @brief The job cost table
+ *
+ *  The i'th element represents the i'th kernel, according to the enum kernel_task_id_e
+ *  in GPUart_Config.h. Each element represents the job costs of the related kernel.
+ *  If a thread block of a kernel requires more then 1/µ of the available registers, shared memory,
+ *  thread residency slots, or thread block residency slots of an Streaming Multiprocessor,
+ *  then set corresponding  value to m * µ, whereby µ is the resource factor and m is the GPU's
+ *  number of Streaming Multiprocessors. If a thread block of a kernel requires less then 1/µ of each
+ *  resource type, then set the corresponding value to the kernels number of thread blocks.
+ *
+ *  @see kernel_task_id_e
+ *  @see C_GPUS_RESOURCE_FACTOR
+ *  @see gpuS_nrOfMultiprocessor_u32
+ *  @see max_costs_per_kernel
+ */
 static uint8 kernel_job_costs[E_KTID_NUMBER_OF_KERNEL_TASKS] =
 {
 	C_SOB1_NUMBER_OF_BLOCKS,	//E_KTID_SOBEL1
@@ -262,7 +452,12 @@ static uint8 kernel_job_costs[E_KTID_NUMBER_OF_KERNEL_TASKS] =
 	C_MM_NUMBER_OF_BLOCKS		//E_KTID_MM
 };
 
-
+/*!
+ *  @brief The device ID of the used GPU
+ *
+ *  @see http://docs.nvidia.com/cuda/cuda-c-programming-guide
+ *  @see https://www.khronos.org/registry/OpenCL/sdk/1.0/docs/man/xhtml/clGetDeviceIDs.html
+ */
 static uint8 gpuI_deviceID_u8 = 0;
 
 
@@ -273,6 +468,16 @@ static uint8 gpuI_deviceID_u8 = 0;
 /* Persistent Kernel																			*/
 /************************************************************************************************/
 
+/*!
+ *  @brief The persistent kernel (GPU Daemon) which is used to reduce kernel launch latencies.
+ *
+ *  The kernel arguments must include all global memory buffers of all kernels in this system, since
+ *  this kernel is used to launch GPGPU kernel on demand. The persistent kernel reduces kernel launch
+ *  latencies by bypassing the GPGPU driver stack when launching kernels.
+ *
+ *  @see Mrozek et al. GPU Daemon: Road to zero cost submission, in Proceedings of the 4th International
+ *  Workshop on OpenCL, Vienna, Austria, 2016 -> https://dl.acm.org/citation.cfm?id=2909450
+ */
 __global__ void GPUart_Persistent_Kernel
 (
 	//Persistent Kernel Management Data
@@ -450,12 +655,19 @@ __global__ void GPUart_Persistent_Kernel
 /* General function definition																	*/
 /************************************************************************************************/
 
-/*************************************************************************************************
-Function: 		gpuI_memcpyHost2Device
-Description:	Copies data from host to global device memory. Device memory may be shared physical 
-				memory or discrete device memory. The device driver API call may depend on the
-				type of device memory (constant, global or texture memory).
-*/
+
+
+/*! @brief Copy data from host memory to device memory.
+ *
+ * 	Device memory may be shared physical memory or discrete device memory. The device driver
+ * 	API call may depend on the type of device memory (global or texture memory).
+ *
+ *  @param[in] void * variable_p -> The host variable to be copied
+ *  @param[in]	device_global_memory_id_e id_p -> The ID of the global memory variable
+ *
+ *  @return GPUART_SUCCESS if memory copy operation has been successfully.
+ *  @return GPUART_ERROR_INVALID_ARGUMENT if id_p is an invalid ID.
+ */
 GPUart_Retval gpuI_memcpyHost2Device(void * variable_p, device_global_memory_id_e id_p)
 {
 	GPUart_Retval retval = GPUART_SUCCESS;
@@ -481,12 +693,18 @@ GPUart_Retval gpuI_memcpyHost2Device(void * variable_p, device_global_memory_id_
 	return retval;
 }
 
-/*************************************************************************************************
-Function: 		gpuI_memcpyDevice2Host
-Description:	Copies data from device to host memory. Device memory may be shared physical
-				memory or discrete device memory. The device driver API call may depend on the
-				type of device memory (global or texture memory).
-*/
+
+/*! @brief Copy data from device memory to host memory.
+ *
+ * 	Device memory may be shared physical memory or discrete device memory. The device driver
+ * 	API call may depend on the type of device memory (global or texture memory).
+ *
+ *  @param[out] void * variable_p -> The host variable to be written
+ *  @param[in]	device_global_memory_id_e id_p -> The ID of the global memory variable
+ *
+ *  @return GPUART_SUCCESS if memory copy operation has been successfully.
+ *  @return GPUART_ERROR_INVALID_ARGUMENT if id_p is an invalid ID.
+ */
 GPUart_Retval gpuI_memcpyDevice2Host(void * variable_p, device_global_memory_id_e id_p)
 {
 	GPUart_Retval retval = GPUART_SUCCESS;
@@ -517,6 +735,19 @@ Description:	Copies data from host memory to constant device memory. The copy is
 				immutable during kernel execution and its value is inherited from parent to child 
 				kernel.
 */
+
+/*! @brief Copy data from host memory to constant device memory.
+ *
+ *		The copy is only possible if persistent GPUart kernel #GPUart_Persistent_Kernel
+ *		is not running, since a constant memory data is immutable during kernel execution
+ *		and its value is inherited from parent to child kernel.
+ *
+ *  @param[in] void * variable_p -> The host variable to be copied
+ *  @param[in] device_constant_memory_id_e id_p -> The ID of the constant memory buffer
+ *
+ *  @return GPUART_SUCCESS if memory copy operation has been successfully.
+ *  @return GPUART_ERROR_INVALID_ARGUMENT if id_p is an invalid ID.
+ */
 GPUart_Retval gpuI_memcpyConstantMemory(void * variable_p, device_constant_memory_id_e id_p)
 {
 	GPUart_Retval retval = GPUART_SUCCESS;
@@ -546,10 +777,14 @@ GPUart_Retval gpuI_memcpyConstantMemory(void * variable_p, device_constant_memor
 
 
 
-/*************************************************************************************************
-Function: 		gpuI_runJob
-Description:	
-*/
+/*!
+ *  @brief Request the launch of a GPGPU kernel.
+ *
+ *  @param kernel_task_id_e task_id_e -> The ID of the kernel to be launched.
+ *
+ *  @return GPUART_SUCCESS if kernel launch has been successfully.
+ *  @return GPUART_ERROR_NOT_READY if launch request is already active.
+ */
 GPUart_Retval gpuI_runJob(kernel_task_id_e task_id_e)
 {
 	GPUart_Retval retval = GPUART_SUCCESS;
@@ -724,9 +959,9 @@ uint32 gpuI_getJobCosts(kernel_task_id_e task_id_e)
 {
 	uint32 retval = kernel_job_costs[task_id_e];
 
-	if(retval > max_blocks_per_kernel)
+	if(retval > max_costs_per_kernel)
 	{
-		retval = max_blocks_per_kernel;
+		retval = max_costs_per_kernel;
 	}
 
 	return retval;
@@ -763,7 +998,7 @@ GPUart_Retval gpuI_get_NrOfMultiprocessors(uint32* nrOfMultprocessors, uint32 re
 
 
 	*nrOfMultprocessors = deviceProp_s.multiProcessorCount * resourceFactor;
-	max_blocks_per_kernel =  deviceProp_s.multiProcessorCount * resourceFactor;
+	max_costs_per_kernel =  deviceProp_s.multiProcessorCount * resourceFactor;
 
 	printf("\nNumber of multiprocessors on the device: %d", *nrOfMultprocessors);
 

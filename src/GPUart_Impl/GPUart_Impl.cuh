@@ -39,7 +39,13 @@
 /************************************************************************************************/
 /* Includes																						*/
 /************************************************************************************************/
+/* CUDA Runtime and device driver*/
+#include <cuda.h>
+#include <cuda_runtime.h>
+#include <cuda_profiler_api.h>
 
+#include "../GPUart_Common/GPUart_Common.h"
+#include "../GPUart_Config/GPUart_Config.h"
 
 /************************************************************************************************/
 /* Compiler Switches																			*/

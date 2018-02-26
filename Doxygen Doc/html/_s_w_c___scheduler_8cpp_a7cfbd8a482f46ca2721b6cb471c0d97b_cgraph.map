@@ -1,0 +1,18 @@
+<map id="swc_Scheduler_Thread0" name="swc_Scheduler_Thread0">
+<area shape="rect" id="node2" href="$_s_w_c___sobel1_8cpp.html#af2da71f406f6f1534deb9730f7d8b2db" title="swc_Sobel1_Task_periodic" alt="" coords="219,56,400,83"/>
+<area shape="rect" id="node15" href="$_s_w_c___sobel2_8cpp.html#a6ef22e84f4353571cb72a4014de4453a" title="swc_Sobel2_Task_periodic" alt="" coords="219,107,400,133"/>
+<area shape="rect" id="node3" href="$_g_p_uart___abstraction_8cpp.html#a843b99d1c7a438a73d5a5e7057849b09" title="Query whether Sobel1 kernel instance has completed and get kernel output data. " alt="" coords="448,5,587,32"/>
+<area shape="rect" id="node6" href="$_g_p_uart___abstraction_8cpp.html#a01ab19adb29fa28ca13351d5a308c61f" title="Instantiates a Sobel1 kernel instance and updates kernel related GPU data. " alt="" coords="454,107,581,133"/>
+<area shape="rect" id="node4" href="$_g_p_uart___scheduler_8cpp.html#a3b323171965754c9bcc30ba92912930b" title="Queries whether a job has terminated. " alt="" coords="646,56,805,83"/>
+<area shape="rect" id="node5" href="$_g_p_uart___impl_8cu.html#ad306fe24bcd5509efb1485474699e45b" title="Copy data from device memory to host memory. " alt="" coords="635,5,815,32"/>
+<area shape="rect" id="node7" href="$_g_p_uart___scheduler_8cpp.html#ac05a1ac16ac4bf60655f6a14e9f44ab7" title="Queries whether a kernel is ready to get instantiated. " alt="" coords="638,107,813,133"/>
+<area shape="rect" id="node8" href="$_g_p_uart___impl_8cu.html#ab5a722428baf9286d78ecf3e47fc33cb" title="Copy data from host memory to device memory. " alt="" coords="635,157,815,184"/>
+<area shape="rect" id="node9" href="$_g_p_uart___abstraction_8cpp.html#a565825343e4f61d39d7412f950fc1451" title="Calls the Scheduling layer to enque a new kernel instance. " alt="" coords="686,208,765,235"/>
+<area shape="rect" id="node10" href="$_g_p_uart___scheduler_8cpp.html#aeb1c51604b68fd58daac0ca090e34485" title="Releases a new job and pushes it to the shared job stack gpuS_JobStackShared_s. " alt="" coords="865,208,975,235"/>
+<area shape="rect" id="node11" href="$_g_p_uart___impl_8cu.html#a6179a901c49eed36f24c87c076e9324f" title="gpuI_SetKernelStatusReady" alt="" coords="1024,157,1211,184"/>
+<area shape="rect" id="node12" href="$_g_p_uart___scheduler_8cpp.html#ac07a086dfe3605db3179ac20e4cf8641" title="Get the priority of a job (kernel instance). " alt="" coords="1058,208,1177,235"/>
+<area shape="rect" id="node14" href="$_g_p_uart___scheduler_8cpp.html#af96373a359f5042852371e6e2220691a" title="Push a new kernel instance to the shared job stack. " alt="" coords="1045,259,1190,285"/>
+<area shape="rect" id="node13" href="$_s_w_c___scheduler_8cpp.html#a82ce61473394b62458f9b5a93919e912" title="swc_Scheduler_getClock" alt="" coords="1259,208,1429,235"/>
+<area shape="rect" id="node16" href="$_g_p_uart___abstraction_8cpp.html#a776924b37436a97f4a8fe1ccd315f184" title="Query whether Sobel2 kernel instance has completed and get kernel output data. " alt="" coords="448,56,587,83"/>
+<area shape="rect" id="node17" href="$_g_p_uart___abstraction_8cpp.html#a990b636c0f614c557db9aa7f810def93" title="Instantiates a Sobel2 kernel instance and updates kernel related GPU data. " alt="" coords="454,157,581,184"/>
+</map>

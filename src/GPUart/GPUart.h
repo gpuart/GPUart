@@ -31,6 +31,18 @@
 *                                                       *
 *********************************************************/
 
+/*!	@file 	GPUart.h
+ *
+ * 	@brief 	The interface to manage GPUart.
+ *
+ * 			The inferface to init, start, stop, and destroy GPUart.
+ * 			Provides also the interface to trigger scheduler of GPUart
+ * 			(The prototype of GPUart schedules by polling).
+ *
+ * 	@author	Christoph Hartmann
+ *  @date	Created on: 3 Apr 2017
+ */
+
 #ifndef GPUART_H
 #define GPUART_H
 
@@ -38,12 +50,63 @@
 /************************************************************************************************/
 /* Function declaration																			*/
 /************************************************************************************************/
-void GPUart_schedule(void);
 
+/* @brief	Initialize all layers of GPUart.
+ *
+ * 			This function calls the init-functions of the Implementation, Scheduling, and Abstraction layers
+ * 			to initialize GPUart related context.
+ * 			Call this function before GPUart_start().
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_init(void);
+
+
+/* @brief	Enable kernel execution on the GPU.
+ *
+ * 			This function calls the Implementation layer to launch the persistent GPU thread,
+ * 			which is used to reduce kernel launch latencies.
+ * 			Call this function after GPUart_init().
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_start(void);
+
+
+/* @brief	Disable kernel execution on the GPU.
+ *
+ * 			This function calls the Implementation layer to terminate the persistent GPU thread.
+ * 			Call this function before GPUart_destroy().
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_stop(void);
+
+
+/* @brief	Destroy all GPUart related context.
+ *
+ * 			This function calls the destroy-functions of the Implementation, Scheduling, and Abstraction layers
+ * 			to destroy GPUart related context.
+ * 			Call this function after GPUart_stop().
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
 void GPUart_destroy(void);
+
+
+/* @brief	Trigger the scheduler of GPUart to process the scheduling decision.
+ *
+ * 			Trigger the scheduler of GPUart to process the scheduling decision
+ * 			(The prototype of GPUart schedules by polling).
+ *
+ * 	@param 	void
+ * 	@return	void
+ */
+void GPUart_schedule(void);
 
 
 #endif

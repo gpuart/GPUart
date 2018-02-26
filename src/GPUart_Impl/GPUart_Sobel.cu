@@ -98,7 +98,6 @@ __global__ void Sobel_Kernel
 	uint32 index_u32 = global_id;
 	sint32 Gx_s32 = 0;
 	sint32 Gy_s32 = 0;
-	sint32 offset = 0;
 	sint32 matrix_temp_s32;
 
 	uint32 loop_condition = (heigth_u32 * width_u32 + global_size - 1)/global_size;

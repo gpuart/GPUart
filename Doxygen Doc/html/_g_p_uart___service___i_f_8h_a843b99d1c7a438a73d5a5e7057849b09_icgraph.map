@@ -1,0 +1,7 @@
+<map id="gpuA_Sobel1_query" name="gpuA_Sobel1_query">
+<area shape="rect" id="node2" href="$_s_w_c___sobel1_8h.html#af2da71f406f6f1534deb9730f7d8b2db" title="swc_Sobel1_Task_periodic" alt="" coords="192,5,373,32"/>
+<area shape="rect" id="node3" href="$_s_w_c___scheduler_8cpp.html#a7cfbd8a482f46ca2721b6cb471c0d97b" title="swc_Scheduler_Thread0" alt="" coords="421,5,587,32"/>
+<area shape="rect" id="node4" href="$_s_w_c___scheduler_8cpp.html#a6177e3516143d32cc560533a96634314" title="swc_Scheduler_MPMD" alt="" coords="635,5,794,32"/>
+<area shape="rect" id="node5" href="$_s_w_c___scheduler_8h.html#a8b146fae0015816eab58c8386bf1a6fc" title="swc_Scheduler_run" alt="" coords="843,5,979,32"/>
+<area shape="rect" id="node6" href="$main_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe" title="main" alt="" coords="1027,5,1077,32"/>
+</map>

@@ -31,30 +31,46 @@
 *                                                       *
 *********************************************************/
 
+/*!	@file 	GPUart_Common.h
+ *
+ * 	@brief 	A library which defines some common macros, typedefs.
+ *
+ *			Implements the service-orientated init-, call-, and query-interfaces, respectively for each kernel.
+ * 			Call a kernel's init-interface to initialize kernel related GPU data.
+ * 			Call a kernel's call-interface to enqueue a new kernel instance in the scheduler and update GPU data.
+ * 			Call a kernel's query-interface to query kernel completion and to get the output of the kernel.
+ * 			This layer is used to achieve higher portability by abstracting the systems's heterogeneity.
+ *
+ * 	@author	Christoph Hartmann
+ *  @date	Created on: 3 Apr 2017
+ */
+
 #ifndef GPUART_COMMON_H
 #define GPUART_COMMON_H
 
 
 
 /************************************************************************************************/
-/* Include																					*/
+/* Include																						*/
 /************************************************************************************************/
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <iostream>
-#include "unistd.h"
+#include <stdio.h>	//Standard I/O
+#include <iostream>	//Standard I/O
+
 
 /************************************************************************************************/
 /* Constants																					*/
 /************************************************************************************************/
+
+/*!	@def C_TRUE
+ *  @brief TRUE condition definition
+ */
 #define C_TRUE				(1==1)
+
+/*!	@def C_FALSE
+ *	@brief FALSE condition definition
+ */
 #define C_FALSE				(1==0)
 
-#define C_UINT32_MAX		(0xFFFFFFFF)
-
-#define C_SINT32_MAX		(0x7FFFFFFF)
-#define C_SINT32_MIN		(0x10000000)
 /************************************************************************************************/
 /* Typedefs																						*/
 /************************************************************************************************/
@@ -76,6 +92,10 @@ typedef float				float32;
 typedef double				float64;
 
 /* Specific datatypes */
+
+/*!	@typedef GPUart_Retval
+ *	@brief The standard return type of functions in GPUart, representing an error code.
+ */
 typedef signed int			GPUart_Retval;
 
 
@@ -86,24 +106,54 @@ typedef signed int			GPUart_Retval;
 /************************************************************************************************/
 /* Error Codes																					*/
 /************************************************************************************************/
+
+/*!	@def GPUART_SUCCESS
+ *	@brief Error code 0x00 -> Function returned successfully
+ */
+/*!	@def GPUART_NO_SUCCESS
+ *	@brief Error code 0x01 -> Function returned unsuccessfully
+ */
+/*!	@def GPUART_ERROR_NOT_READY
+ *	@brief Error code 0x02 -> Error: operation not ready
+ */
+/*!	@def GPUART_ERROR_NO_OPERTATION
+ *	@brief Error code 0x03 -> Error: function return without doing anything
+ */
+/*!	@def GPUART_ERROR_INVALID_ARGUMENT
+ *	@brief Error code 0x04 -> Error: an invalid function parameter has been used
+ */
+/*!	@def GPUART_ERROR_PESISTENT_KERNEL_IS_RUNNING
+ *	@brief Error code 0x03 -> Error: operation could not be executed, since the
+ *									 persistent GPU thread is already running.
+ */
+
 #define	GPUART_SUCCESS								(0x00)
 #define	GPUART_NO_SUCCESS							(0x01)
 #define	GPUART_ERROR_NOT_READY						(0x02)
 #define GPUART_ERROR_NO_OPERTATION					(0x03)
 #define GPUART_ERROR_INVALID_ARGUMENT				(0x04)
 #define GPUART_ERROR_PESISTENT_KERNEL_IS_RUNNING	(0x08)
-#define GPUART_ERROR_COMMAND_ALREADY_ISSUED			(0x10)
+
 
 
 /************************************************************************************************/
-/* Makro definition																				*/
+/* Macro definition																				*/
 /************************************************************************************************/
+
+/*!	@def GPUART_CHECK_RETURN
+ *	@brief Standard macro for error checking within GPUart.
+ */
 #define GPUART_CHECK_RETURN(value) gpuartCheckReturn(__FILE__,__LINE__, #value, value)
 
 
 /************************************************************************************************/
 /* Function definition																			*/
 /************************************************************************************************/
+
+
+/*!	@brief Standard function for error checking within GPUart.
+ *
+ */
 static void gpuartCheckReturn(const char *file, unsigned line, const char *statement, sint32 err)
 {
 	if (err == 0)
