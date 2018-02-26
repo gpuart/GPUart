@@ -1,4 +1,4 @@
-Welcome to the prototype of GPUart, an application-based limited preemtive GPU real-time scheduler, focusing embedded systems and integrated GPUs.
+﻿Welcome to the prototype of GPUart, an application-based limited preemtive GPU real-time scheduler, focusing embedded systems and integrated GPUs.
 In order to schedule kernel real-time capable, GPUart includes a light-weight high-level GPU resource managment approach, 
 enabling Gang scheduling on GPUs. GPUart can preempt kernel which implement our approach for limited preemption on instruction level,
 according to the fixed preemption point strategy.
