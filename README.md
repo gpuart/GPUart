@@ -5,6 +5,8 @@ according to the fixed preemption point strategy.
 GPUart is placed on top of the GPGPU driver stack and requires neither hardware- nor driver stack extensions to schedule
 GPGPU kernel in real-time fashion, instead, it uses only state-of-the-art GPU hardware- and software features. 
 
+The documentation of the GPUart prototpy can be found [here]{https://gpuart.github.io/files.html}.
+
 Our journal paper about GPUart has recently been submitted for publication. The link to the paper will be provided as soon as the 
 paper has been released. 
 
@@ -16,7 +18,7 @@ Contributions:
 ==============
 
 GPUart was created by Christoph A. Hartmann, a research scientist in the research group of Ulrich Margull at the Technische Hochschule Ingolstadt
-(THI, engl. Technical University of Applied Science Ingolstadt). GPUart was developed within the scope of the research project FORMUS³IC (www.formus3ic.de),
+(THI, engl. Technical University of Applied Science Ingolstadt). GPUart was developed within the scope of the research project FORMUSÂ³IC (www.formus3ic.de),
 founded by the Bayerische Forschungsstiftung (BFS, engl. Bavarian Research Foundation). 
 
 
