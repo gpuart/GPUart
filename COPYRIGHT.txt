@@ -1,4 +1,7 @@
-Copyright (c) 2017-2018 Christoph A. Hartmann, Ulrich Margull and Technische Hochschule Ingolstadt (THI)
+Copyright (c) 2017-2018 Christoph A. Hartmann, Ulrich Margull and Technische Hochschule Ingolstadt(THI)
+
+Cite as: C. Hartmann and U. Margull, „GPUart - An Application-Based Limited Preemptive GPU Real-Time 
+         Scheduler for Embedded Systems“, J. Syst. Archit., Okt. 2018, DOI: 10.1016/j.sysarc.2018.10.005
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this 
 software and associated documentation files (the "Software"), to deal in the Software
@@ -7,8 +10,11 @@ merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
 permit persons to whom the Software is furnished to do so, subject to the following 
 conditions:
 
-The above copyright notice and this permission notice shall be included in all copies 
-or substantial portions of the Software.
+Redistribution of source code must retain the above copyright notice, the citation key
+the list of conditions and the following disclaimer.
+Redistribution in binary form must reproduce the above copyright notice, the citation key
+the list of conditions and the following discalaimer in the documentation and/or other 
+materials provided with the distribution. 
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
 INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
